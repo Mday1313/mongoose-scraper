@@ -7,12 +7,14 @@ var cheerio = require("cheerio");
 var exphbs = require("express-handlebars");
 
 // Require all models
-var db = require("./models/Notes");
+var db = require("./models");
 
 var PORT = process.env.PORT || 3000;
 
 // Initialize Express
 var app = express();
+
+
 
 app.use(logger("dev"));
 // Parse request body as JSON
@@ -21,14 +23,27 @@ app.use(express.json());
 // Make public a static folder
 app.use(express.static("public"));
 
+
+
 // Connect to the Mongo DB
-mongoose.connect("mongodb://localhost/mongooseScraper", { useNewUrlParser: true });
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/mongooseScraper", { useNewUrlParser: true });
 
 
 
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
+
+app.get('/', function (req, res) {
+  res.render('home');
+});
+
+app.get("/saved", function(req, res){
+  res.render("saved");
+});
+// app.get("/", function(req, res) {
+//   res.send("Hello world");
+// });
 // add web address to scrape
 
 app.get("/scrape", function (req, res) {
@@ -43,17 +58,34 @@ app.get("/scrape", function (req, res) {
         result.title = $(this)
           .children(".card__content").children("h1")
           .text();
+          
         result.link = $(this)
           .attr("href");
         result.image = $(this)
           .children("figure").children("img") 
           .attr("src");
 
-          console.log(result);
-      })
-    })
-})
+          db.Article.create(result)
+          .then(function(dbArt){
+            console.log(dbArt);
+          })
+          .catch(function(err){
+            console.log(err);
+          });
+      });
+   
+    });
+});
 
+app.get("/articles", function(req, res){
+  db.Article.find({})
+  .then(function(dbArt){
+    res.json(dbArt);
+  })
+  .catch(function(err){
+    res.json(err);
+  });
+});
 
 // Start the server
 app.listen(PORT, function () {
