@@ -34,9 +34,9 @@ app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
 
-app.get('/', function (req, res) {
-  res.render('home');
-});
+// app.get('/', function (req, res) {
+//   res.render('home');
+// });
 
 app.get("/saved", function(req, res){
   res.render("saved");
@@ -46,7 +46,8 @@ app.get("/saved", function(req, res){
 // });
 // add web address to scrape
 
-app.get("/scrape", function (req, res) {
+app.get("/", function (req, res) {
+  res.render('home');
 
   axios.get("https://www.lonelyplanet.com/travel-tips-and-articles")
     .then(function (response) {
@@ -68,13 +69,16 @@ app.get("/scrape", function (req, res) {
           db.Article.create(result)
           .then(function(dbArt){
             console.log(dbArt);
+            
           })
           .catch(function(err){
             console.log(err);
           });
+          
       });
-   
+      
     });
+   
 });
 
 app.get("/articles", function(req, res){
