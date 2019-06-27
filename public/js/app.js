@@ -4,7 +4,7 @@
 var displayArticles = function () {
     $.getJSON("/articles", function (data) {
         for (var i = 0; i < data.length; i++) {
-            $("#articles").append("<div id='artDiv'class='col-4'><img class='art-image' src='" + data[i].image + "'>" + "<h3>" + data[i].title + "</h3>" + "</p><br/><p class='summary'>" + data[i].summary + "</p>" + "<a class='btn btn-secondary' href='https://www.lonelyplanet.com/travel-tips-and-articles" + data[i].link + "' role='button'>Read Article</a>  <a class='btn btn-danger save-btn' id='" + data[i]._id + "'method='POST' onclick='AddButtonClick()' role='button'>Save Article</a></div>");
+            $("#articles").append("<div id='artDiv'class='col-4'><img class='art-image' src='" + data[i].image + "'>" + "<h3>" + data[i].title + "</h3>" + "</p><br/><p class='summary'>" + data[i].summary + "</p>" + "<a class='btn btn-secondary' href='https://www.lonelyplanet.com/travel-tips-and-articles" + data[i].link + "' role='button'>Read Article</a>  <a class='btn btn-danger save-btn' id='" + data[i]._id + "'method='POST'  role='button'>Save Article</a></div>");
         }
 
     });
@@ -16,7 +16,7 @@ var displaySaved = function () {
     $("#saved-well").empty();
     $.getJSON("/saved/display", function (data) {
         for (var i = 0; i < data.length; i++) {
-            $("#saved-well").append("<div id='saveDiv'class='col-12'><div class='row'><img class='save-image col-3' src='" + data[i].image + "'>" + "<div class='col-9'><h3>" + data[i].title + "</h3>" + "</p><br/><p class='summary'>" + data[i].summary + "</p>" + "<a class='btn btn-secondary' href='https://www.lonelyplanet.com/travel-tips-and-articles" + data[i].link + "' role='button'>Read Article</a>  <a class='btn btn-warning remove-save-btn' id='" + data[i]._id + "'  role='button'>Remove from Saved</a>  <a class='btn btn-info note-btn' data-id='" + data[i]._id + "' href='/' role='button'>Add a Note</a></div></div></div>");
+            $("#saved-well").append("<div id='saveDiv'class='col-12'><div class='row'><img class='save-image col-3' src='" + data[i].image + "'>" + "<div class='col-9'><h3>" + data[i].title + "</h3>" + "</p><br/><p class='summary'>" + data[i].summary + "</p>" + "<a class='btn btn-secondary' href='https://www.lonelyplanet.com/travel-tips-and-articles" + data[i].link + "' role='button'>Read Article</a>  <a class='btn btn-warning remove-save-btn' id='" + data[i]._id + "'  role='button'>Remove from Saved</a>  <a class='btn btn-info note-btn' data-id='" + data[i]._id + "'data-toggle='modal' data-target='#myModal' role='button'>Add a Note</a><br><div class='note-display'>notes here</div></div></div></div>");
         }
 
     });
@@ -69,7 +69,66 @@ $(document).on("click", ".save-btn", function () {
     });
 });
 
-function AddButtonClick(){ 
-    //change text from add to Update
-    $(".save-btn").text('Saved');
-  }
+$(document).on("click", ".note-btn", function() {
+    // Empty the notes from the note section
+    $("#notes").empty();
+   
+    // Save the id from the p tag
+    var thisId = $(this).attr("data-id");
+  
+    // Now make an ajax call for the Article
+    $.ajax({
+      method: "GET",
+      url: "/articles/" + thisId
+    })
+      // With that done, add the note information to the page
+      .then(function(data) {
+        console.log(data);
+        // The title of the article
+        $("#notes").append("<h2>" + data.title + "</h2>");
+        // An input to enter a new title
+        $("#notes").append("<label>Note Title: </label><br><input id='titleinput' name='title' ><br>");
+        // A textarea to add a new note body
+        $("#notes").append("<label>Note Message: </label><br><textarea id='bodyinput' name='body'></textarea><br>");
+        // A button to submit a new note, with the id of the article saved to it
+        $("#notes").append("<button data-dismiss='modal' data-id='" + data._id + "' id='savenote'>Save Note</button>");
+  
+        // If there's a note in the article
+        if (data.note) {
+          // Place the title of the note in the title input
+          $("#titleinput").val(data.note.title);
+          // Place the body of the note in the body textarea
+          $("#bodyinput").val(data.note.body);
+        }
+      });
+  });
+  
+  // When you click the savenote button
+  $(document).on("click", "#savenote", function() {
+    
+    // Grab the id associated with the article from the submit button
+    var thisId = $(this).attr("data-id");
+  
+    // Run a POST request to change the note, using what's entered in the inputs
+    $.ajax({
+      method: "POST",
+      url: "/articles/" + thisId,
+      data: {
+        // Value taken from title input
+        title: $("#titleinput").val(),
+        // Value taken from note textarea
+        body: $("#bodyinput").val()
+      }
+    })
+      // With that done
+      .then(function(data) {
+        // Log the response
+        console.log(data);
+        // Empty the notes section
+        $("#notes").empty();
+      });
+  
+    // Also, remove the values entered in the input and textarea for note entry
+    $("#titleinput").val("");
+    $("#bodyinput").val("");
+  });

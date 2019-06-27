@@ -20,6 +20,9 @@
     margin: 0;
    
 }
+#notes{
+    margin: auto;
+}
 #savedJum {
     background: url(../img/MDP_3103.jpg);
     background-size: 100%;
