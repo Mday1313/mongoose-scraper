@@ -21,6 +21,17 @@ var displaySaved = function () {
 
     });
 }
+
+// var displayNotes = function () {
+//     console.log("im here")
+//     $("#saved-well").empty();
+//     $.getJSON("/saved/note", function (data) {
+//         for (var i = 0; i < data.length; i++) {
+//             $(".note-display").append("<div id='saveDiv'class='col-12'><div class='row'><img class='save-image col-3' src='" + data[i].image + "'>" + "<div class='col-9'><h3>" + data[i].title + "</h3>" + "</p><br/><p class='summary'>" + data[i].summary + "</p>" + "<a class='btn btn-secondary' href='https://www.lonelyplanet.com/travel-tips-and-articles" + data[i].link + "' role='button'>Read Article</a>  <a class='btn btn-warning remove-save-btn' id='" + data[i]._id + "'  role='button'>Remove from Saved</a>  <a class='btn btn-info note-btn' data-id='" + data[i]._id + "'data-toggle='modal' data-target='#myModal' role='button'>Add a Note</a><br><div class='note-display'>notes here</div></div></div></div>");
+//         }
+
+//     });
+// }
 // Get articles as json, display on page
 $("#scrape-btn").on("click", function () {
 
@@ -31,7 +42,13 @@ $("#save-display").on("click", function () {
 
 console.log("click")
     displaySaved();
+    // displayNotes();
 });
+// $("#save-display").on("click", function () {
+
+//     console.log("click")
+//         displaySaved();
+//     });
 $(document).on("click", ".remove-save-btn", function () {
 
     console.log("Remove click");
@@ -124,11 +141,13 @@ $(document).on("click", ".note-btn", function() {
       .then(function(data) {
         // Log the response
         console.log(data);
+        // displayNotes();
         // Empty the notes section
         $("#notes").empty();
       });
   
     // Also, remove the values entered in the input and textarea for note entry
+   
     $("#titleinput").val("");
     $("#bodyinput").val("");
   });

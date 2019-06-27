@@ -23,6 +23,17 @@
 #notes{
     margin: auto;
 }
+.modal-content{
+    background: #1c515e;
+    color: #fad467;
+    margin: auto;
+    text-align: center;
+    font-family: 'B612 Mono', monospace;
+}
+#savenote{
+    background: #fad467;
+    color: #1c515e;
+}
 #savedJum {
     background: url(../img/MDP_3103.jpg);
     background-size: 100%;
