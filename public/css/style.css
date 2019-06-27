@@ -6,12 +6,18 @@
     color: #1c515e;
     font-weight: bold;
 }
+#save-display{
+    background: #fad467;
+    color: #1c515e;
+    font-weight: bold;
+}
 .jumbotron { 
     background: url(../img/MDP_1910-2.jpg);
     background-size: 100%;
     height: 700px;
     background-repeat: no-repeat;
     text-align: center;
+    margin: 0;
    
 }
 .display-4{
@@ -23,17 +29,18 @@
     width: 70%;
     margin-bottom: 10px;
 }
-#artDiv {
+#artDiv, #saveDiv {
     margin-bottom: 40px;
 }
 .container {
-    margin-top: 100px;
+    margin-top: 20px;
 }
 .card {
     margin: 10px;
 }
 .saved-head {
     text-align: center;
+    margin: 0;
 }
 
 @media only screen and (max-width: 600px) {

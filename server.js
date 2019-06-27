@@ -34,23 +34,24 @@ app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
 
-app.get('/saved', function (req, res) {
-  res.render("saved");
+app.get('/saved/display', function (req, res) {
+  
+  
+  db.Article.find({saved: true})
+  .then(function(dbArt){
+    res.json(dbArt);
+  })
+  .catch(function(err){
+    res.json(err);
+  });
+
+ 
 });
 
+app.get("/saved", function(req, res){
+  res.render("saved");
+})
 
-// app.get("/api/saved", function(req, res) {
-  
-
-//   db.Article.find({saved: false})
-//   .then(function(dbArt){
-//     res.json(dbArt);
-//   })
-//   .catch(function(err){
-//     res.json(err);
-//   });
-// });
-// add web address to scrape
 
 app.get("/", function (req, res) {
   res.render('home');
@@ -98,7 +99,15 @@ app.get("/articles", function(req, res){
     res.json(err);
   });
 });
-
+// app.get("/articles/saved/display", function(req, res){
+//   db.Article.find({saved: true})
+//   .then(function(dbArt){
+//     res.json(dbArt);
+//   })
+//   .catch(function(err){
+//     res.json(err);
+//   });
+// });
 app.post("/articles/saved/:id", function(req, res) {
   db.Article
       .update({ _id: req.params.id }, { saved: true })
