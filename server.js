@@ -34,15 +34,21 @@ app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
 
-// app.get('/', function (req, res) {
-//   res.render('home');
-// });
-
-app.get("/saved", function(req, res){
+app.get('/saved', function (req, res) {
   res.render("saved");
 });
-// app.get("/", function(req, res) {
-//   res.send("Hello world");
+
+
+// app.get("/api/saved", function(req, res) {
+  
+
+//   db.Article.find({saved: false})
+//   .then(function(dbArt){
+//     res.json(dbArt);
+//   })
+//   .catch(function(err){
+//     res.json(err);
+//   });
 // });
 // add web address to scrape
 
@@ -59,7 +65,9 @@ app.get("/", function (req, res) {
         result.title = $(this)
           .children(".card__content").children("h1")
           .text();
-          
+        result.summary = $(this)
+          .children(".card__content") .children("div").children("p")
+          .text(); 
         result.link = $(this)
           .attr("href");
         result.image = $(this)
@@ -91,6 +99,24 @@ app.get("/articles", function(req, res){
   });
 });
 
+app.post("/articles/saved/:id", function(req, res) {
+  db.Article
+      .update({ _id: req.params.id }, { saved: true })
+      .then(function(dbArticle) {
+          res.json(dbArticle);
+      })
+      .catch(function(err) {
+          res.json(err);
+      });
+});
+// update saved value, this will plug into 
+// app.post("/", function(req,res){
+
+// })
+// app.get("/api/saved", function(req, res){
+ 
+  
+// });
 // Start the server
 app.listen(PORT, function () {
   console.log("App running on port " + PORT + "!");
