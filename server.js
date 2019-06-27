@@ -118,6 +118,16 @@ app.post("/articles/saved/:id", function(req, res) {
           res.json(err);
       });
 });
+app.post("/articles/saved/remove/:id", function(req, res) {
+  db.Article
+      .update({ _id: req.params.id }, { saved: false })
+      .then(function(dbArticle) {
+          res.json(dbArticle);
+      })
+      .catch(function(err) {
+          res.json(err);
+      });
+});
 // update saved value, this will plug into 
 // app.post("/", function(req,res){
 
