@@ -11,6 +11,16 @@
     color: #1c515e;
     font-weight: bold;
 }
+.note-btn{
+    background: #529ccb;
+    
+}
+.view-notes-btn{
+    background: 
+    #80942a;
+    color: whitesmoke;
+    
+}
 .jumbotron { 
     background: url(../img/MDP_1910-2.jpg);
     background-size: 100%;

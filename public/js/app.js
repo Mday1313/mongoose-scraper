@@ -16,7 +16,7 @@ var displaySaved = function () {
     $("#saved-well").empty();
     $.getJSON("/saved/display", function (data) {
         for (var i = 0; i < data.length; i++) {
-            $("#saved-well").append("<div id='saveDiv'class='col-12'><div class='row'><img class='save-image col-3' src='" + data[i].image + "'>" + "<div class='col-9'><h3>" + data[i].title + "</h3>" + "</p><br/><p class='summary'>" + data[i].summary + "</p>" + "<a class='btn btn-secondary' href='https://www.lonelyplanet.com/travel-tips-and-articles" + data[i].link + "' role='button'>Read Article</a>  <a class='btn btn-warning remove-save-btn' id='" + data[i]._id + "'  role='button'>Remove from Saved</a>  <a class='btn btn-info note-btn' data-id='" + data[i]._id + "'data-toggle='modal' data-target='#myModal' role='button'>Add a Note</a><br><div class='note-display'>note go here</div></div></div></div>");
+            $("#saved-well").append("<div id='saveDiv'class='col-12'><div class='row'><img class='save-image col-3' src='" + data[i].image + "'>" + "<div class='col-9'><h3>" + data[i].title + "</h3>" + "</p><br/><p class='summary'>" + data[i].summary + "</p>" + "<a class='btn btn-secondary' href='https://www.lonelyplanet.com/travel-tips-and-articles" + data[i].link + "' role='button'>Read Article</a>  <a class='btn btn-warning remove-save-btn' id='" + data[i]._id + "'  role='button'>Remove from Saved</a>  <a class='btn note-btn' data-id='" + data[i]._id + "'data-toggle='modal' data-target='#myModal' role='button'>Add a Note</a>  <a class='btn  view-notes-btn' data-id='" + data[i]._id + "'data-toggle='modal' data-target='#myNotesModal' role='button'>View Notes</a><br></div></div></div>");
         }
 
     });
@@ -106,6 +106,28 @@ $(document).on("click", ".note-btn", function() {
           $("#bodyinput").val(data.notes.body);
         }
       });
+  });
+  $(document).on("click", ".view-notes-btn", function() {
+    // Empty the notes from the note section
+    $("#notes").empty();
+   
+    // Save the id from the p tag
+    var thisId = $(this).attr("data-id");
+  
+    // Now make an ajax call for the Article
+    // $.ajax({
+    //   method: "GET",
+    //   url: "/articles/notes/" + thisId
+    // })
+    //   // With that done, add the note information to the page
+    //   .then(function(data) {
+    //     console.log("new"+ data);
+    //     // The title of the article
+    //     $("#viewNotes").append("<h2 class='note-title'>" + data.title + "</h2>");
+       
+  
+      
+    //   });
   });
   
   // When you click the savenote button
