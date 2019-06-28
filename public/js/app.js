@@ -16,22 +16,13 @@ var displaySaved = function () {
     $("#saved-well").empty();
     $.getJSON("/saved/display", function (data) {
         for (var i = 0; i < data.length; i++) {
-            $("#saved-well").append("<div id='saveDiv'class='col-12'><div class='row'><img class='save-image col-3' src='" + data[i].image + "'>" + "<div class='col-9'><h3>" + data[i].title + "</h3>" + "</p><br/><p class='summary'>" + data[i].summary + "</p>" + "<a class='btn btn-secondary' href='https://www.lonelyplanet.com/travel-tips-and-articles" + data[i].link + "' role='button'>Read Article</a>  <a class='btn btn-warning remove-save-btn' id='" + data[i]._id + "'  role='button'>Remove from Saved</a>  <a class='btn btn-info note-btn' data-id='" + data[i]._id + "'data-toggle='modal' data-target='#myModal' role='button'>Add a Note</a><br><div class='note-display'>notes here</div></div></div></div>");
+            $("#saved-well").append("<div id='saveDiv'class='col-12'><div class='row'><img class='save-image col-3' src='" + data[i].image + "'>" + "<div class='col-9'><h3>" + data[i].title + "</h3>" + "</p><br/><p class='summary'>" + data[i].summary + "</p>" + "<a class='btn btn-secondary' href='https://www.lonelyplanet.com/travel-tips-and-articles" + data[i].link + "' role='button'>Read Article</a>  <a class='btn btn-warning remove-save-btn' id='" + data[i]._id + "'  role='button'>Remove from Saved</a>  <a class='btn btn-info note-btn' data-id='" + data[i]._id + "'data-toggle='modal' data-target='#myModal' role='button'>Add a Note</a><br><div class='note-display'>note go here</div></div></div></div>");
         }
 
     });
 }
 
-// var displayNotes = function () {
-//     console.log("im here")
-//     $("#saved-well").empty();
-//     $.getJSON("/saved/note", function (data) {
-//         for (var i = 0; i < data.length; i++) {
-//             $(".note-display").append("<div id='saveDiv'class='col-12'><div class='row'><img class='save-image col-3' src='" + data[i].image + "'>" + "<div class='col-9'><h3>" + data[i].title + "</h3>" + "</p><br/><p class='summary'>" + data[i].summary + "</p>" + "<a class='btn btn-secondary' href='https://www.lonelyplanet.com/travel-tips-and-articles" + data[i].link + "' role='button'>Read Article</a>  <a class='btn btn-warning remove-save-btn' id='" + data[i]._id + "'  role='button'>Remove from Saved</a>  <a class='btn btn-info note-btn' data-id='" + data[i]._id + "'data-toggle='modal' data-target='#myModal' role='button'>Add a Note</a><br><div class='note-display'>notes here</div></div></div></div>");
-//         }
 
-//     });
-// }
 // Get articles as json, display on page
 $("#scrape-btn").on("click", function () {
 
@@ -44,11 +35,7 @@ console.log("click")
     displaySaved();
     // displayNotes();
 });
-// $("#save-display").on("click", function () {
 
-//     console.log("click")
-//         displaySaved();
-//     });
 $(document).on("click", ".remove-save-btn", function () {
 
     console.log("Remove click");
@@ -69,6 +56,7 @@ $(document).on("click", ".remove-save-btn", function () {
     });
     
 });
+
 $(document).on("click", ".save-btn", function () {
 
     console.log("click");
@@ -102,20 +90,20 @@ $(document).on("click", ".note-btn", function() {
       .then(function(data) {
         console.log(data);
         // The title of the article
-        $("#notes").append("<h2>" + data.title + "</h2>");
+        $("#notes").append("<h2 class='note-title'>" + data.title + "</h2>");
         // An input to enter a new title
-        $("#notes").append("<label>Note Title: </label><br><input id='titleinput' name='title' ><br>");
+        $("#notes").append("<label>Title: </label><br><input class='noteInput' id='titleinput' name='title' ><br>");
         // A textarea to add a new note body
-        $("#notes").append("<label>Note Message: </label><br><textarea id='bodyinput' name='body'></textarea><br>");
+        $("#notes").append("<label>Message: </label> <br><textarea class='noteInput' id='bodyinput' name='body'></textarea><br>");
         // A button to submit a new note, with the id of the article saved to it
-        $("#notes").append("<button data-dismiss='modal' data-id='" + data._id + "' id='savenote'>Save Note</button>");
+        $("#notes").append("<button data-dismiss='modal' data-id='" + data._id + "' class='noteBtn' id='savenote'>Save Note</button>");
   
         // If there's a note in the article
-        if (data.note) {
+        if (data.notes) {
           // Place the title of the note in the title input
-          $("#titleinput").val(data.note.title);
+          $("#titleinput").val(data.notes.title);
           // Place the body of the note in the body textarea
-          $("#bodyinput").val(data.note.body);
+          $("#bodyinput").val(data.notes.body);
         }
       });
   });
