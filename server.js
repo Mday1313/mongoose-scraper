@@ -71,7 +71,7 @@ app.get("/saved", function(req, res){
 app.get("/", function (req, res) {
   res.render('home');
 
-  axios.get("https://www.lonelyplanet.com/travel-tips-and-articles")
+  axios.get("https://www.lonelyplanet.com/travel-tips-and-articles/adventure-travel" && "https://www.lonelyplanet.com/travel-tips-and-articles/food-and-drink" && "https://www.lonelyplanet.com/travel-tips-and-articles/art-and-culture")
     .then(function (response) {
       var $ = cheerio.load(response.data);
 

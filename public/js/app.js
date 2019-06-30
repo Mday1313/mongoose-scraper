@@ -136,7 +136,7 @@ $(document).on("click", ".note-btn", function() {
          
          
          // Display Note
-         $("#viewNotes").append("<p class='style-save'>Saved Notes:</p><br>" + "<p class='style-heads'>Title: </p><br><p>" + data.note.title + "</p><br><p class='style-heads'> Message: </p><br><p>" + data.note.body + "</p>");
+         $("#viewNotes").append("<p class='style-save'>Saved Note:</p><br>" + "<p class='style-heads'>Title: </p><br><p>" + data.note.title + "</p><br><p class='style-heads'> Message: </p><br><p>" + data.note.body + "</p>");
        
        }
     
