@@ -16,7 +16,7 @@ var displaySaved = function () {
     $("#saved-well").empty();
     $.getJSON("/saved/display", function (data) {
         for (var i = 0; i < data.length; i++) {
-            $("#saved-well").append("<div id='saveDiv'class='col-12'><div class='row'><img class='save-image col-3' src='" + data[i].image + "'>" + "<div class='col-9'><h3>" + data[i].title + "</h3>" + "</p><br/><p class='summary'>" + data[i].summary + "</p>" + "<a class='btn btn-secondary' href='https://www.lonelyplanet.com/travel-tips-and-articles" + data[i].link + "' role='button'>Read Article</a>  <a class='btn btn-warning remove-save-btn' id='" + data[i]._id + "'  role='button'>Remove from Saved</a>  <a class='btn note-btn' data-id='" + data[i]._id + "'data-toggle='modal' data-target='#myModal' role='button'>Add a Note</a>  <a class='btn  view-notes-btn' data-id='" + data[i]._id + "'data-toggle='modal' data-target='#myNotesModal' role='button'>View Notes</a><br></div></div></div>");
+            $("#saved-well").append("<div id='saveDiv'class='col-12'><div class='row'><img class='save-image col-3' src='" + data[i].image + "'>" + "<div class='col-9'><h3>" + data[i].title +"</h3>" + "</p><br/><p class='summary'>" + data[i].summary + "</p>" + "<a class='btn btn-secondary' href='https://www.lonelyplanet.com/travel-tips-and-articles" + data[i].link + "' role='button'>Read Article</a>  <a class='btn btn-warning remove-save-btn' id='" + data[i]._id + "'  role='button'>Remove from Saved</a>  <a class='btn note-btn' data-id='" + data[i]._id + "'data-toggle='modal' data-target='#myModal' role='button'>Add a Note</a>  <a class='btn  view-notes-btn' data-id='" + data[i]._id + "'data-toggle='modal' data-target='#myNotesModal' role='button'>View Notes</a><br></div></div></div>");
         }
 
     });
@@ -28,6 +28,7 @@ $("#scrape-btn").on("click", function () {
 
     displayArticles();
 });
+
 
 $("#save-display").on("click", function () {
 
@@ -88,9 +89,11 @@ $(document).on("click", ".note-btn", function() {
     })
       // With that done, add the note information to the page
       .then(function(data) {
-        console.log(data);
+        console.log("this"+ data);
         // The title of the article
         $("#notes").append("<h2 class='note-title'>" + data.title + "</h2>");
+
+       
         // An input to enter a new title
         $("#notes").append("<label>Title: </label><br><input class='noteInput' id='titleinput' name='title' ><br>");
         // A textarea to add a new note body
@@ -99,35 +102,46 @@ $(document).on("click", ".note-btn", function() {
         $("#notes").append("<button data-dismiss='modal' data-id='" + data._id + "' class='noteBtn' id='savenote'>Save Note</button>");
   
         // If there's a note in the article
-        if (data.notes) {
-          // Place the title of the note in the title input
-          $("#titleinput").val(data.notes.title);
-          // Place the body of the note in the body textarea
-          $("#bodyinput").val(data.notes.body);
-        }
+      
       });
   });
   $(document).on("click", ".view-notes-btn", function() {
     // Empty the notes from the note section
-    $("#notes").empty();
+    $("#viewNotes").empty();
    
     // Save the id from the p tag
     var thisId = $(this).attr("data-id");
   
-    // Now make an ajax call for the Article
-    // $.ajax({
-    //   method: "GET",
-    //   url: "/articles/notes/" + thisId
-    // })
-    //   // With that done, add the note information to the page
-    //   .then(function(data) {
-    //     console.log("new"+ data);
-    //     // The title of the article
-    //     $("#viewNotes").append("<h2 class='note-title'>" + data.title + "</h2>");
+    
+    $.ajax({
+      method: "GET",
+      url: "/articles/" + thisId,
+      success: function (response) {
+        console.log("Success noted!!!");
+        
+        
+        // displayNotes();
+    },
+    error: function (error) {
+        console.log(error);
+    }
+    })
+      // With that done, add the note information to the page
+      .then(function(data) {
+        
+        // The title of the article
+        if (data.note) {
+          
+          console.log(data.note);
+         
+         
+         // Display Note
+         $("#viewNotes").append("<p class='style-save'>Saved Notes:</p><br>" + "<p class='style-heads'>Title: </p><br><p>" + data.note.title + "</p><br><p class='style-heads'> Message: </p><br><p>" + data.note.body + "</p>");
        
-  
+       }
+    
       
-    //   });
+      });
   });
   
   // When you click the savenote button
@@ -151,6 +165,7 @@ $(document).on("click", ".note-btn", function() {
       .then(function(data) {
         // Log the response
         console.log(data);
+        // res.send(data);
         // displayNotes();
         // Empty the notes section
         $("#notes").empty();
@@ -161,3 +176,6 @@ $(document).on("click", ".note-btn", function() {
     $("#titleinput").val("");
     $("#bodyinput").val("");
   });
+
+
+  
