@@ -48,20 +48,7 @@ app.get('/saved/display', function (req, res) {
  
 });
 
-// NEXT STEP FOR DIPLAYING NOTES WITH EACH ARTICLE
-// app.get('/saved/note/:id', function (req, res) {
-  
-  
-//   db.Article.find({_id: req.params.id})
-//   .then(function(dbArt){
-//     res.json(dbArt);
-//   })
-//   .catch(function(err){
-//     res.json(err);
-//   });
 
- 
-// });
 // Display saved.handlebars, Connected to saved link in home nav
 app.get("/saved", function(req, res){
   res.render("saved");
@@ -152,6 +139,16 @@ app.get("/articles/:id", function(req, res) {
     .catch(function(err) {
       // If an error occurred, send it to the client
       res.json(err);
+    });
+});
+//Route for deleting a note
+app.delete("/articles/:id", function(req, res) {
+  db.Note.deleteOne({ _id: req.params.id })
+  .then(function(removed) {
+    res.json(removed);
+  }).catch(function(err,removed) {
+      // If an error occurred, send it to the client
+        res.json(err);
     });
 });
 

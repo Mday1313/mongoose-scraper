@@ -105,6 +105,21 @@ $(document).on("click", ".note-btn", function() {
       
       });
   });
+
+    //delete a note
+    $(document).on("click", ".delete-note", function() {
+      $("#viewNotes").empty();
+
+      // $.ajax({
+      //   method: "DELETE",
+      //   url: "/articles/" + thisId
+      // })
+      // .then(function(data) {
+      //   // Log the response
+      //   console.log(data);
+      //   location.reload();
+      // }); 
+  });
   $(document).on("click", ".view-notes-btn", function() {
     // Empty the notes from the note section
     $("#viewNotes").empty();
@@ -120,7 +135,7 @@ $(document).on("click", ".note-btn", function() {
         console.log("Success noted!!!");
         
         
-        // displayNotes();
+        
     },
     error: function (error) {
         console.log(error);
@@ -136,7 +151,7 @@ $(document).on("click", ".note-btn", function() {
          
          
          // Display Note
-         $("#viewNotes").append("<p class='style-save'>Saved Note:</p><br>" + "<p class='style-heads'>Title: </p><br><p>" + data.note.title + "</p><br><p class='style-heads'> Message: </p><br><p>" + data.note.body + "</p>");
+         $("#viewNotes").append("<p class='style-save'>Saved Note:</p><br>" + "<p class='style-heads'>Title: </p><br><p>" + data.note.title + "</p><br><p class='style-heads'> Message: </p><br><p>" + data.note.body + "</p><br><a class='btn btn-warning delete-note' data-id='" + data.note._id + "'  role='button'>Delete Note</a>");
        
        }
     
